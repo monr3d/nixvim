@@ -15,7 +15,7 @@
       };
       settings = {
         inherit (config.ui) transparent;
-        override = ''
+        override.__raw = ''
           function(colors)
             local theme = colors.theme
             local makeDiagnosticColor = function(color)
