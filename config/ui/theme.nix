@@ -1,7 +1,11 @@
 { lib, ... }:
+let
+  snacksModules = [ "explorer" ];
+in
 {
   imports = [
     ./colorschemes
+    ./snacks
   ];
 
   options.ui = {
@@ -11,13 +15,23 @@
         "kanagawa"
       ];
     };
+
     transparent = lib.mkEnableOption "transparent background";
+
+    snacks = {
+      enable = lib.mkEnableOption "Enable Snacks UX";
+      exclude = lib.mkOption {
+        type = lib.types.listOf (lib.types.enum snacksModules);
+        default = [ ];
+      };
+    };
   };
 
   config = {
     ui = {
       theme = lib.mkDefault "kanagawa";
       transparent = lib.mkDefault true;
+      snacks.enable = lib.mkDefault true;
     };
 
     globalOpts = {
