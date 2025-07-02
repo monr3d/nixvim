@@ -1,6 +1,9 @@
 { lib, ... }:
 let
-  snacksModules = [ "explorer" ];
+  snacksModules = [
+    "explorer"
+    "picker"
+  ];
 in
 {
   imports = [
@@ -31,7 +34,12 @@ in
     ui = {
       theme = lib.mkDefault "kanagawa";
       transparent = lib.mkDefault true;
-      snacks.enable = lib.mkDefault true;
+      snacks = {
+        enable = lib.mkDefault true;
+        exclude = [
+          "picker"
+        ];
+      };
     };
 
     globalOpts = {

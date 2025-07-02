@@ -3,6 +3,7 @@
   # Import all your configuration modules here
   imports = [
     ./keymaps
+    ./lsp/lspconfig.nix
     ./ui/theme.nix
   ];
 

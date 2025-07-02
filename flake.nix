@@ -34,7 +34,7 @@
           module = import ./config;
           # Pass extraSpecialArgs to the module, making them accessible within the module
           extraSpecialArgs = {
-            inherit system;
+            inherit system self;
           } // extraArgs;
         };
     in
