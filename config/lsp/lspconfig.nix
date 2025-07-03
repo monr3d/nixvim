@@ -1,6 +1,7 @@
 { lib, config, ... }:
 {
   imports = [
+    ./completion/blink-cmp.nix
     ./lang
     ./treesitter.nix
   ];
