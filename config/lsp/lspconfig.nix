@@ -67,7 +67,7 @@
         if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, bufnr) then
           vim.keymap.set('n', '<leader>lt', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr }))
-          end, { desc = '[L]SP: [t]oggle Inlay Hints', buffer = bufnr })
+          end, { desc = 'Toggle Inlay Hints', buffer = bufnr })
         end
       '';
     };

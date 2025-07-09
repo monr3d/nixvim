@@ -21,7 +21,7 @@
         settings = {
           enabled.__raw = ''
             function()
-                return not vim.tbl_contains({ "dashboard" }, vim.bo.filetype)
+                return not vim.tbl_contains({ "snacks_dashboard" }, vim.bo.filetype)
                     and vim.bo.buftype ~= "prompt"
                     and vim.b.completion ~= false
             end
@@ -33,19 +33,63 @@
               auto_insert = false;
               preselect = false;
             };
-            menu.draw.columns = [
-              {
-                __unkeyed = "kind_icon";
-              }
-              {
-                __unkeyed_2 = "label";
-                __unkeyed_3 = "label_description";
-                gap = 1;
-              }
-              {
-                __unkeyed_1 = "source_name";
-              }
-            ];
+            menu.draw = {
+              columns = [
+                {
+                  __unkeyed = "kind_icon";
+                }
+                {
+                  __unkeyed_1 = "label";
+                  __unkeyed_2 = "label_description";
+                  gap = 1;
+                }
+                {
+                  __unkeyed = "source_name";
+                }
+              ];
+              components = lib.mkIf config.plugins.mini-icons.enable {
+                kind_icon = {
+                  text.__raw = ''
+                    function(ctx)
+                        local icon = ctx.kind_icon
+
+                        if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                            local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                            if dev_icon then
+                                icon = dev_icon
+                            end
+                        else
+                            local mini_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
+                            if mini_icon then
+                                icon = mini_icon
+                            end
+                        end
+
+                        return icon .. ctx.icon_gap
+                    end
+                  '';
+                  highlight.__raw = ''
+                    function(ctx)
+                        local hl = ctx.kind_hl
+
+                        if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                            local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                            if dev_icon then
+                                hl = dev_hl
+                            end
+                        else
+                            local _, mini_hl, _ = require('mini.icons').get('lsp', ctx.kind)
+                            if mini_hl then
+                                hl = mini_hl
+                            end
+                        end
+
+                        return hl
+                    end
+                  '';
+                };
+              };
+            };
           };
           signature.enabled = true;
           sources = {

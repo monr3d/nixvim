@@ -4,143 +4,224 @@
     keymaps = lib.flatten (
       [
         {
+          key = "<leader>la";
+          lspBufAction = "code_action";
+          options = {
+            desc = "Code Action";
+          };
+        }
+        {
           key = "<leader>lf";
           lspBufAction = "format";
           options = {
-            desc = "[L]SP: [f]ormat ";
-          };
-        }
-        {
-          action.__raw = ''
-            function()
-              vim.notify(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-            end
-          '';
-          key = "<leader>lwl";
-          options = {
-            desc = "[w]orkspace: [l]ist Folders";
-          };
-        }
-      ]
-      ++ lib.optional (builtins.elem "picker" config.ui.snacks.exclude) [
-        {
-          key = "<leader>lgn";
-          action = "<CMD>lua vim.diagnostic.goto_next()<CR>";
-          options = {
-            desc = "[G]o to: [n]ext Diagnostic";
-          };
-        }
-        {
-          key = "<leader>lgp";
-          action = "<CMD>lua vim.diagnostic.goto_prev()<CR>";
-          options = {
-            desc = "[G]o to: [p]revious Diagnostic";
-          };
-        }
-        {
-          key = "<leader>le";
-          action = "<CMD>lua vim.diagnostic.open_float()<CR>";
-          options = {
-            desc = "Go to: [e] Open Diagnostic (float)";
-          };
-        }
-        {
-          key = "<leader>lgD";
-          lspBufAction = "declaration";
-          options = {
-            desc = "[G]o to: [D]eclaration";
-          };
-        }
-        {
-          key = "<leader>lgd";
-          lspBufAction = "definition";
-          options = {
-            desc = "[G]o to: [d]efinition";
-          };
-        }
-        {
-          key = "<leader>lgt";
-          lspBufAction = "type_definition";
-          options = {
-            desc = "[G]o to: [t]ype";
-          };
-        }
-        {
-          key = "<leader>lgi";
-          lspBufAction = "implementation";
-          options = {
-            desc = "[G]o to: [i]mplementation";
-          };
-        }
-        {
-          key = "<leader>lgr";
-          lspBufAction = "references";
-          options = {
-            desc = "[G]o to: [r]eferences";
-            nowait = true;
-          };
-        }
-        {
-          key = "<leader>lH";
-          lspBufAction = "document_highlight";
-          options = {
-            desc = "[L]SP: Document [H]ighlight";
-          };
-        }
-        {
-          key = "<leader>lS";
-          lspBufAction = "document_symbol";
-          options = {
-            desc = "[L]SP: Document [S]ymbol";
-          };
-        }
-        {
-          key = "<leader>lwa";
-          lspBufAction = "add_workspace_folder";
-          options = {
-            desc = "[W]orkspace: [a]dd Folder";
-          };
-        }
-        {
-          key = "<leader>lwr";
-          lspBufAction = "remove_workspace_folder";
-          options = {
-            desc = "[W]orkspace: [r]emove Folder";
-          };
-        }
-        {
-          key = "<leader>lws";
-          lspBufAction = "workspace_symbol";
-          options = {
-            desc = "[W]orkspace: [s]ymbol";
+            desc = "Format ";
           };
         }
         {
           key = "<leader>lh";
           lspBufAction = "hover";
           options = {
-            desc = "[L]SP: [h]over";
+            desc = "Hover";
           };
         }
         {
-          key = "<leader>ls";
-          lspBufAction = "signature_help";
+          key = "<leader>lH";
+          lspBufAction = "document_highlight";
           options = {
-            desc = "[L]SP: [s]ignature Help";
+            desc = "Document Highlight";
           };
         }
         {
           key = "<leader>lr";
           lspBufAction = "rename";
           options = {
-            desc = "[L]SP: [r]ename";
+            desc = "Rename";
           };
         }
         {
-          key = "<leader>la";
-          lspBufAction = "code_action";
+          key = "<leader>ls";
+          lspBufAction = "signature_help";
           options = {
-            desc = "[L]SP: Code [a]ction";
+            desc = "Signature Help";
+          };
+        }
+        {
+          key = "<leader>lwa";
+          lspBufAction = "add_workspace_folder";
+          options = {
+            desc = "Add Folder";
+          };
+        }
+        {
+          key = "<leader>lwl";
+          action.__raw = ''
+            function()
+              vim.notify(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+            end
+          '';
+          options = {
+            desc = "List Folders";
+          };
+        }
+        {
+          key = "<leader>lwr";
+          lspBufAction = "remove_workspace_folder";
+          options = {
+            desc = "Remove Folder";
+          };
+        }
+      ]
+      ++ lib.optional (builtins.elem "picker" config.ui.snacks.exclude) [
+        {
+          key = "<leader>lgd";
+          lspBufAction = "definition";
+          options = {
+            desc = "Definition";
+          };
+        }
+        {
+          key = "<leader>lgD";
+          lspBufAction = "declaration";
+          options = {
+            desc = "Declaration";
+          };
+        }
+        {
+          key = "<leader>lgi";
+          lspBufAction = "implementation";
+          options = {
+            desc = "Implementation";
+          };
+        }
+        {
+          key = "<leader>lgr";
+          lspBufAction = "references";
+          options = {
+            desc = "References";
+            nowait = true;
+          };
+        }
+        {
+          key = "<leader>lgt";
+          lspBufAction = "type_definition";
+          options = {
+            desc = "Type";
+          };
+        }
+        {
+          key = "<leader>lws";
+          lspBufAction = "workspace_symbol";
+          options = {
+            desc = "Symbol";
+          };
+        }
+        {
+          key = "<leader>lS";
+          lspBufAction = "document_symbol";
+          options = {
+            desc = "Document Symbol";
+          };
+        }
+      ]
+      ++ lib.optional (!(builtins.elem "picker" config.ui.snacks.exclude)) [
+        {
+          key = "<leader>lgd";
+          action.__raw = ''
+            function()
+            Snacks.picker.lsp_definitions()
+            end
+          '';
+          options = {
+            desc = "Definition";
+          };
+        }
+        {
+          key = "<leader>lgD";
+          action.__raw = ''
+            function()
+            Snacks.picker.lsp_declarations()
+            end
+          '';
+          options = {
+            desc = "Declaration";
+          };
+        }
+        {
+          key = "<leader>lgi";
+          action.__raw = ''
+            function()
+            Snacks.picker.lsp_implementations()
+            end
+          '';
+          options = {
+            desc = "Implementation";
+          };
+        }
+        {
+          key = "<leader>lgr";
+          action.__raw = ''
+            function()
+            Snacks.picker.lsp_references()
+            end
+          '';
+          options = {
+            desc = "References";
+            nowait = true;
+          };
+        }
+        {
+          key = "<leader>lgt";
+          action.__raw = ''
+            function()
+            Snacks.picker.lsp_type_definitions()
+            end
+          '';
+          options = {
+            desc = "Type";
+          };
+        }
+        {
+          key = "<leader>lwd";
+          action.__raw = ''
+            function()
+            Snacks.picker.diagnostics()
+            end
+          '';
+          options = {
+            desc = "Diagnostic";
+          };
+        }
+        {
+          key = "<leader>lws";
+          action.__raw = ''
+            function()
+            Snacks.picker.lsp_worspace_symbols()
+            end
+          '';
+          options = {
+            desc = "Symbol";
+          };
+        }
+        {
+          key = "<leader>ld";
+          action.__raw = ''
+            function()
+                Snacks.picker.diagnostics_buffer()
+            end
+          '';
+          options = {
+            desc = "Diagnostic";
+          };
+        }
+        {
+          key = "<leader>lS";
+          action.__raw = ''
+            function()
+                Snacks.picker.lsp_symbols()
+            end
+          '';
+          options = {
+            desc = "Document Symbol";
           };
         }
       ]
@@ -150,18 +231,18 @@
   plugins.which-key.settings.spec = [
     {
       __unkeyed-1 = "<leader>l";
-      group = "[l]SP";
-      icon = " ";
+      group = "LSP";
+      icon = "";
     }
     {
       __unkeyed-1 = "<leader>lw";
-      group = "[w]orkspace";
-      # icon = "󰓩 ";
+      group = "Workspace";
+      icon = "";
     }
     {
       __unkeyed-1 = "<leader>lg";
-      group = "[g]o to";
-      icon = " ";
+      group = "Go to";
+      icon = "";
     }
-      ];
+  ];
 }

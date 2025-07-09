@@ -1,13 +1,16 @@
 { lib, ... }:
 let
   snacksModules = [
+    "dashboard"
     "explorer"
     "picker"
+    "indent"
   ];
 in
 {
   imports = [
     ./colorschemes
+    ./misc
     ./snacks
   ];
 
@@ -37,7 +40,7 @@ in
       snacks = {
         enable = lib.mkDefault true;
         exclude = [
-          "picker"
+          "indent"
         ];
       };
     };
