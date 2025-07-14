@@ -2,6 +2,7 @@
 {
   config = {
     extraPackages = with pkgs; [
+      luajitPackages.luacheck
       stylua
     ];
 
@@ -10,6 +11,12 @@
         formatters.stylua.command = "stylua";
         formatters_by_ft.lua = [ "stylua" ];
       };
+
+      lint = {
+        linters.luacheck.cmd = "luacheck";
+        lintersByFt.lua = [ "luacheck" ];
+      };
+    };
 
     lsp.servers.lua_ls = {
       enable = true;

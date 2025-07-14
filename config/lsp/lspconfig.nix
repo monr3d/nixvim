@@ -3,6 +3,7 @@
   imports = [
     ./completion/blink-cmp.nix
     ./formatter/conform-nvim.nix
+    ./linter/nvim-lint.nix
     ./lang
     ./treesitter.nix
   ];
