@@ -2,6 +2,7 @@
 {
   imports = [
     ./completion/blink-cmp.nix
+    ./formatter/conform-nvim.nix
     ./lang
     ./treesitter.nix
   ];

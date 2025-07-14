@@ -121,7 +121,10 @@
 
     # Plugin Management
     # Enable the 'lz-n' plugin
-    plugins.lz-n.enable = true;
+    plugins = {
+      lz-n.enable = true;
+      lzn-auto-require.enable = true;
+    };
 
     # Performance Optimizations
     performance = {

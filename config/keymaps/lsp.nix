@@ -11,13 +11,6 @@
           };
         }
         {
-          key = "<leader>lf";
-          lspBufAction = "format";
-          options = {
-            desc = "Format ";
-          };
-        }
-        {
           key = "<leader>lh";
           lspBufAction = "hover";
           options = {
@@ -68,6 +61,15 @@
           lspBufAction = "remove_workspace_folder";
           options = {
             desc = "Remove Folder";
+          };
+        }
+      ]
+      ++ lib.optional (!config.plugins.conform-nvim.enable) [
+        {
+          key = "<leader>lf";
+          lspBufAction = "format";
+          options = {
+            desc = "Format ";
           };
         }
       ]
