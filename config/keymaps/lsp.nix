@@ -232,19 +232,27 @@
 
   plugins.which-key.settings.spec = [
     {
-      __unkeyed-1 = "<leader>l";
-      group = "LSP";
-      icon = "";
-    }
-    {
-      __unkeyed-1 = "<leader>lw";
-      group = "Workspace";
-      icon = "";
-    }
-    {
-      __unkeyed-1 = "<leader>lg";
-      group = "Go to";
-      icon = "";
+      __unkeyed = [
+        {
+          __unkeyed = "<leader>l";
+          group = "LSP";
+          icon = "";
+        }
+        {
+          __unkeyed = "<leader>lw";
+          group = "Workspace";
+          icon = "";
+        }
+        {
+          __unkeyed = "<leader>lg";
+          group = "Go to";
+          icon = "";
+        }
+      ];
+      mode = [
+        "n"
+        "v"
+      ];
     }
   ];
 }
