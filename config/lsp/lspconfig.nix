@@ -34,7 +34,13 @@
 
     plugins.lspconfig = {
       enable = true;
-      lazyLoad.settings.event = "BufRead";
+      lazyLoad.settings = {
+        event = [
+          "BufRead"
+          "BufNewFile"
+        ];
+        cmd = [ "LspInfo" ];
+      };
     };
 
     lsp = {
