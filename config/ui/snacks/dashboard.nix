@@ -1,36 +1,27 @@
 { config, lib, ... }:
 {
   config = lib.mkIf (!(builtins.elem "dashboard" config.ui.snacks.exclude)) {
-    # WOrkaround until this is merged: https://github.com/folke/snacks.nvim/pull/1643
+    # Workaround until this is merged: https://github.com/folke/snacks.nvim/pull/1643
     autoCmd = [
       {
         callback.__raw = ''
           function()
-              vim.o.winborder = "none"
+              vim.o.winborder = 'none'
 
-              vim.schedule(function()
+              vim.defer_fn(function()
                   Snacks.dashboard.update()
-              end)
+              end, 100)
+
+              vim.defer_fn(function()
+                  vim.o.winborder = 'rounded'
+              end, 100)
+
           end
         '';
         event = [
           "FileType"
         ];
         once = true;
-        group = "DashboardBorder";
-        pattern = [
-          "snacks_dashboard"
-        ];
-      }
-      {
-        callback.__raw = ''
-          function()
-              vim.o.winborder = "rounded"
-          end
-        '';
-        event = [
-          "BufLeave"
-        ];
         group = "DashboardBorder";
         pattern = [
           "snacks_dashboard"
@@ -46,6 +37,7 @@
     plugins.snacks = {
       settings = {
         dashboard = {
+          enabled = true;
           pane_gap = 0;
           preset = {
             header = lib.concatStringsSep "\n" [
@@ -157,13 +149,6 @@
                 end
               '';
             }
-            # {
-            #   pane = 2;
-            #   section = "terminal";
-            #   cmd = "${lib.getExe' pkgs.dwt1-shell-color-scripts "colorscript"} -e square";
-            #   height = 5;
-            #   padding = 1;
-            # }
             {
               text = [
                 {
