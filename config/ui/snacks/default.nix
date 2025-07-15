@@ -4,6 +4,7 @@
     ./dashboard.nix
     ./explorer.nix
     ./indent.nix
+    ./notifier.nix
     ./picker.nix
   ];
 
@@ -15,6 +16,7 @@
         toggle.enabled = lib.mkDefault false;
         explorer.enabled = lib.mkDefault false;
         indent.enabled = lib.mkDefault false;
+        notifier.enabled = lib.mkDefault false;
         picker.enabled = lib.mkDefault false;
       };
     };
