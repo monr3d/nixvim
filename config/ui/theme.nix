@@ -5,6 +5,7 @@ let
     "explorer"
     "picker"
     "indent"
+    "input"
     "notifier"
   ];
 in
