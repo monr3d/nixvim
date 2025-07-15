@@ -20,16 +20,8 @@
     ];
 
     plugins.snacks.lazyLoad.settings.keys =
-      # [
-      #     # Static keybindings that are always included
-      #     {
-      #       __raw = "{ '<leader>c', function() MyCustomFunc() end, desc = 'Custom Command' }";
-      #     }
-      # ] ++
       lib.optional (!(builtins.elem "explorer" config.ui.snacks.exclude)) {
-        # {
         __raw = "{ '<leader>e', function() Snacks.explorer() end, desc = 'File Explorer' }";
-        # }
       }
       ++ lib.optional (!(builtins.elem "picker" config.ui.snacks.exclude)) {
         __raw = ''
@@ -50,15 +42,18 @@
           { '<leader>fw', function() Snacks.picker.lines() end, desc = 'Grep Lines' },
           { '<leader>fw', function() Snacks.picker.grep_word() end, desc = 'Grep Current Word' },
           -- git
-          { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
+          { '<leader>gb', function() Snacks.picker.git_branches() end, desc = 'Git Branches' },
           { '<leader>gf', function() Snacks.picker.git_files() end, desc = 'Git Files' },
-          { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
-          { "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log Line" },
-          { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
-          { "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
-          { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)" },
-          { "<leader>gf", function() Snacks.picker.git_log_file() end, desc = "Git Log File" },
+          { '<leader>gl', function() Snacks.picker.git_log() end, desc = 'Git Log' },
+          { '<leader>gL', function() Snacks.picker.git_log_line() end, desc = 'Git Log Line' },
+          { '<leader>gs', function() Snacks.picker.git_status() end, desc = 'Git Status' },
+          { '<leader>gS', function() Snacks.picker.git_stash() end, desc = 'Git Stash' },
+          { '<leader>gd', function() Snacks.picker.git_diff() end, desc = 'Git Diff (Hunks)' },
+          { '<leader>gf', function() Snacks.picker.git_log_file() end, desc = 'Git Log File' }
         '';
+      }
+      ++ lib.optional (!(builtins.elem "lazygit" config.ui.snacks.exclude)) {
+        __raw = "{ '<leader>gg', function() Snacks.lazygit() end, desc = 'LazyGit' }";
       };
   };
 }
