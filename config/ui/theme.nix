@@ -3,10 +3,11 @@ let
   snacksModules = [
     "dashboard"
     "explorer"
-    "picker"
     "indent"
     "input"
+    "lazygit"
     "notifier"
+    "picker"
   ];
 in
 {

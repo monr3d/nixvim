@@ -5,6 +5,7 @@
     ./explorer.nix
     ./indent.nix
     ./input.nix
+    ./lazygit.nix
     ./notifier.nix
     ./picker.nix
   ];
@@ -18,6 +19,7 @@
         explorer.enabled = lib.mkDefault false;
         indent.enabled = lib.mkDefault false;
         input.enable = lib.mkDefault false;
+        lazygit.enabled = lib.mkDefault false;
         notifier.enabled = lib.mkDefault false;
         picker.enabled = lib.mkDefault false;
       };
