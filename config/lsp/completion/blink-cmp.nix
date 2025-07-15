@@ -6,7 +6,7 @@
     (import ./providers/ripgrep.nix { offset = 10; })
     (import ./providers/spell.nix {
       inherit lib;
-      offset = -5;
+      offset = -10;
     })
   ];
 
@@ -26,67 +26,78 @@
                     and vim.b.completion ~= false
             end
           '';
+          appearance.use_nvim_cmp_as_default = true;
           completion = {
-            documentation.auto_show = true;
-            ghost_text.enabled = true;
+            documentation = {
+              auto_show = true;
+            };
+            ghost_text = {
+              enabled = true;
+              show_without_selection = true;
+            };
             list.selection = {
-              auto_insert = false;
               preselect = false;
             };
-            menu.draw = {
-              columns = [
-                {
-                  __unkeyed = "kind_icon";
-                }
-                {
-                  __unkeyed_1 = "label";
-                  __unkeyed_2 = "label_description";
-                  gap = 1;
-                }
-                {
-                  __unkeyed = "source_name";
-                }
-              ];
-              components = lib.mkIf config.plugins.mini-icons.enable {
-                kind_icon = {
-                  text.__raw = ''
-                    function(ctx)
-                        local icon = ctx.kind_icon
+            menu = {
+              draw = {
+                columns = [
+                  {
+                    __unkeyed = "kind_icon";
+                  }
+                  {
+                    __unkeyed_1 = "label";
+                    __unkeyed_2 = "label_description";
+                    gap = 1;
+                  }
+                  {
+                    __unkeyed = "source_name";
+                  }
+                ];
+                components = lib.mkIf config.plugins.mini-icons.enable {
+                  kind_icon = {
+                    text.__raw = ''
+                      function(ctx)
+                          local icon = ctx.kind_icon
 
-                        if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                            local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-                            if dev_icon then
-                                icon = dev_icon
-                            end
-                        else
-                            local mini_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
-                            if mini_icon then
-                                icon = mini_icon
-                            end
-                        end
+                          if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                              local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                              if dev_icon then
+                                  icon = dev_icon
+                              end
+                          else
+                              local mini_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
+                              if mini_icon and mini_icon ~= '󰞋' then
+                                  icon = mini_icon
+                              else
+                                  local custom_icon = require('blink.cmp.config').appearance.kind_icons[ctx.kind]
+                                  if custom_icon then
+                                      icon = custom_icon
+                                  end
+                              end
+                          end
+                          return (icon or "") .. (ctx.icon_gap or "")
+                      end
+                    '';
+                    highlight.__raw = ''
+                      function(ctx)
+                          local hl = ctx.kind_hl
 
-                        return icon .. ctx.icon_gap
-                    end
-                  '';
-                  highlight.__raw = ''
-                    function(ctx)
-                        local hl = ctx.kind_hl
+                          if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                              local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                              if dev_icon then
+                                  hl = dev_hl
+                              end
+                          else
+                              local _, mini_hl, _ = require('mini.icons').get('lsp', ctx.kind)
+                              if mini_hl then
+                                  hl = mini_hl
+                              end
+                          end
 
-                        if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                            local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-                            if dev_icon then
-                                hl = dev_hl
-                            end
-                        else
-                            local _, mini_hl, _ = require('mini.icons').get('lsp', ctx.kind)
-                            if mini_hl then
-                                hl = mini_hl
-                            end
-                        end
-
-                        return hl
-                    end
-                  '';
+                          return hl
+                      end
+                    '';
+                  };
                 };
               };
             };
