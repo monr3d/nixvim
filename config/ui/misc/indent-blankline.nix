@@ -1,8 +1,8 @@
-{ config, lib, ... }:
+{ config, ... }:
 {
   config = {
     plugins.indent-blankline = {
-      enable = !lib.hasAttr "indent" config.plugins.snacks.settings;
+      enable = !config.plugins.snacks.settings.indent.enabled;
       settings = {
         exclude.filetypes = [
           "snacks_dashboard"
