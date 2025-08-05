@@ -4,7 +4,7 @@
   ...
 }:
 {
-  pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+  pre-commit-check = inputs.git-hooks.lib.${system}.run {
     src = ./.;
     default_stages = [ "pre-commit" ];
     hooks = {
@@ -18,13 +18,14 @@
         enable = true;
         name = "destroyed-symlinks";
         description = "detects symlinks which are changed to regular files with a content of a path which that symlink was pointing to.";
-        package = inputs.pre-commit-hooks.checks.${system}.pre-commit-hooks;
-        entry = "${inputs.pre-commit-hooks.checks.${system}.pre-commit-hooks}/bin/destroyed-symlinks";
+        package = inputs.git-hooks.checks.${system}.pre-commit-hooks;
+        entry = "${inputs.git-hooks.checks.${system}.pre-commit-hooks}/bin/destroyed-symlinks";
         types = [ "symlink" ];
       };
       detect-private-keys.enable = true;
       end-of-file-fixer.enable = true;
       fix-byte-order-marker.enable = true;
+      flake-checker.enable = true;
       forbid-submodules = {
         enable = true;
         name = "forbid submodules";
@@ -43,6 +44,7 @@
       deadnix = {
         enable = true;
         settings = {
+          edit = true;
           noLambdaArg = true;
         };
       };

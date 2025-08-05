@@ -1,5 +1,5 @@
 {
-  description = "My Nix-Powered Neovim Configuration";
+  description = "My nixvim Neovim Configuration";
 
   outputs =
     {
@@ -19,24 +19,24 @@
         # "aarch64-darwin"
       ];
 
-      # Helper function to construct the core NixVim module configuration.
-      mkModule =
-        {
-          system,
-          extraArgs ? { },
-        }:
-        {
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
-          # Define the module imports for your NixVim configuration
-          module = import ./config;
-          # Pass extraSpecialArgs to the module, making them accessible within the module
-          extraSpecialArgs = {
-            inherit system self;
-          } // extraArgs;
+      # Helper function to get 'pkgs' for a given system
+      pkgsFor =
+        system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
         };
+
+      # Helper function to construct the core 'NixVim' module configuration.
+      mkModule = system: {
+        pkgs = pkgsFor system;
+        # Define the module imports for your NixVim configuration
+        module = import ./config;
+        # Pass extraSpecialArgs to the module, making them accessible within the module
+        extraSpecialArgs = {
+          inherit system self;
+        };
+      };
     in
     {
       # ========= Formatting =========
@@ -47,9 +47,7 @@
       # Defines integrity checks and tests for the flake.
       checks = forAllSystems (system: {
         # Default check: Builds and tests the NixVim configuration
-        default = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule (mkModule {
-          inherit system;
-        });
+        default = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule (mkModule system);
 
         # Pre-commit checks, defined in ./checks.nix
         inherit
@@ -69,22 +67,45 @@
       });
 
       # ========= Packages =========
-      packages = forAllSystems (system: {
-        default = nixvim.legacyPackages.${system}.makeNixvimWithModule (mkModule {
-          inherit system;
-        });
-      });
+      packages = forAllSystems (
+        system:
+        let
+          base = nixvim.legacyPackages.${system}.makeNixvimWithModule (mkModule system);
+        in
+        {
+          default = base;
+        }
+      );
     };
 
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nuschtosSearch.follows = "";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nuschtosSearch.follows = "";
+      };
     };
 
-    pre-commit-hooks = {
+    git-hooks = {
       url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixvim/nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        gitignore.follows = "";
+        flake-compat.follows = "";
+      };
     };
+  };
+
+  nixConfig = {
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+    allow-import-from-derivation = false;
   };
 }
